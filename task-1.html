@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Task: Quadratic Solver</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .calculator-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 { 
+            color: #2c3e50; 
+            margin-top: 0;
+        }
+        .input-group {
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        input {
+            width: 50px;
+            padding: 8px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        input:focus {
+            border-color: #3498db;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 1.5rem;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-card">
+        <h2>Quadratic Solver</h2>
+        <p>Find the roots for: <br><strong>ax² + bx + c = 0</strong></p>
+        
+        <div class="input-group">
+            <input type="number" id="valA" placeholder="a"> x² + 
+            <input type="number" id="valB" placeholder="b"> x + 
+            <input type="number" id="valC" placeholder="c"> = 0
+        </div>
+
+        <button onclick="calculateRoots()">Solve Equation</button>
+
+        <div id="result"></div>
+    </div>
+
+    <!-- JavaScript to perform the math task -->
+    <script>
+        function calculateRoots() {
+            // 1. Get the values from the input boxes
+            const a = parseFloat(document.getElementById('valA').value);
+            const b = parseFloat(document.getElementById('valB').value);
+            const c = parseFloat(document.getElementById('valC').value);
+            const resultBox = document.getElementById('result');
+
+            // 2. Validate inputs to ensure they are numbers
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                showResult('Please enter valid numbers for a, b, and c.', '#fadbd8', '#c0392b');
+                return;
+            }
+            if (a === 0) {
+                showResult('Value "a" cannot be zero.', '#fadbd8', '#c0392b');
+                return;
+            }
+
+            // 3. Perform the task (calculate discriminant and roots)
+            const discriminant = (b * b) - (4 * a * c);
+            
+            if (discriminant > 0) {
+                const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                showResult(`Two Real Roots:<br> x₁ = ${root1.toFixed(2)} <br> x₂ = ${root2.toFixed(2)}`, '#e8f8f5', '#27ae60');
+            } else if (discriminant === 0) {
+                const root = -b / (2 * a);
+                showResult(`One Real Root:<br> x = ${root.toFixed(2)}`, '#e8f8f5', '#27ae60');
+            } else {
+                const realPart = (-b / (2 * a)).toFixed(2);
+                const imagPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(2);
+                showResult(`Complex Roots:<br> x₁ = ${realPart} + ${imagPart}i <br> x₂ = ${realPart} - ${imagPart}i`, '#fcf3cf', '#f39c12');
+            }
+        }
+
+        // Helper function to update the screen
+        function showResult(message, bgColor, textColor) {
+            const resultBox = document.getElementById('result');
+            resultBox.style.backgroundColor = bgColor;
+            resultBox.style.color = textColor;
+            resultBox.innerHTML = message;
+            resultBox.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
